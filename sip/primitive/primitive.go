@@ -1,4 +1,4 @@
-package sip
+package primitive
 
 type Stringer interface {
 	String() string

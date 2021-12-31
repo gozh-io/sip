@@ -1,23 +1,25 @@
-package sip
+package header
 
 import (
 	"bytes"
 	"fmt"
-	"github.com/bean-du/sip/pkg/util"
+
+	"github.com/gozh-io/sip/sip/primitive"
+	"github.com/gozh-io/sip/util"
 )
 
 type ViaHop struct {
 	ProtocolName    string
 	ProtocolVersion string
 	Transport       string
-	Host            string
-	Port            *Port
-	Params          Params
+	Host   string
+	Port   *primitive.Port
+	Params Params
 }
 
 type ViaHeader []*ViaHop
 
-func NewViaHop(name, version, transport string, host string, port *Port, params Params) *ViaHop {
+func NewViaHop(name, version, transport string, host string, port *primitive.Port, params Params) *ViaHop {
 	return &ViaHop{
 		ProtocolName:    name,
 		ProtocolVersion: version,

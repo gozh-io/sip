@@ -1,47 +1,49 @@
-package sip
+package header
 
 import (
 	"bytes"
 	"fmt"
 	"strings"
 	"sync"
+
+	"github.com/gozh-io/sip/sip/primitive"
 )
 
 type Params interface {
-	Get(key string) (Stringer, bool)
-	Add(key string, val Stringer) Params
+	Get(key string) (primitive.Stringer, bool)
+	Add(key string, val primitive.Stringer) Params
 	Remove(key string) Params
 	Clone() Params
 	Equals(params interface{}) bool
 	ToString(sep uint8) string
 	String() string
 	Length() int
-	Items() map[string]Stringer
+	Items() map[string]primitive.Stringer
 	Keys() []string
 	Has(key string) bool
 }
 
 type headerParams struct {
 	mu          sync.Mutex
-	params      map[string]Stringer
+	params      map[string]primitive.Stringer
 	paramsOrder []string
 }
 
 func NewParams() Params {
 	return &headerParams{
-		params:      make(map[string]Stringer),
+		params:      make(map[string]primitive.Stringer),
 		paramsOrder: []string{},
 	}
 }
 
-func (h *headerParams) Get(key string) (Stringer, bool) {
+func (h *headerParams) Get(key string) (primitive.Stringer, bool) {
 	h.mu.Lock()
 	defer h.mu.Unlock()
 	p, ok := h.params[key]
 	return p, ok
 }
 
-func (h *headerParams) Add(key string, val Stringer) Params {
+func (h *headerParams) Add(key string, val primitive.Stringer) Params {
 	h.mu.Lock()
 	defer h.mu.Unlock()
 
@@ -141,7 +143,7 @@ func (h *headerParams) ToString(sep uint8) string {
 
 		buffer.WriteString(fmt.Sprintf("%s", key))
 
-		if val, ok := val.(*String); ok {
+		if val, ok := val.(*primitive.String); ok {
 			if strings.ContainsAny(val.String(), " \t") {
 				buffer.WriteString(fmt.Sprintf("=\"%s\"", val.String()))
 			} else {
@@ -167,7 +169,7 @@ func (h *headerParams) Length() int {
 	return len(h.params)
 }
 
-func (h *headerParams) Items() map[string]Stringer {
+func (h *headerParams) Items() map[string]primitive.Stringer {
 	h.mu.Lock()
 	defer h.mu.Unlock()
 	return h.params
@@ -186,4 +188,11 @@ func (h *headerParams) Has(key string) bool {
 
 	_, ok := h.params[key]
 	return ok
+}
+
+func cloneWithNil(params Params) Params {
+	if params == nil {
+		return NewParams()
+	}
+	return params.Clone()
 }

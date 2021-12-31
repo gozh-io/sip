@@ -1,9 +1,9 @@
-package sip
+package header
 
 type Header interface {
 	String() string
 	Name() string
 	Value() string
-	Equals() bool
+	Equals(other interface{}) bool
 	Clone() Header
 }
