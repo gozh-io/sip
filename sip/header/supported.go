@@ -5,24 +5,24 @@ import (
 	"strings"
 )
 
-type Require struct {
+type Supported struct {
 	Options []string
 }
 
-func (r *Require) String() string {
+func (r *Supported) String() string {
 	return fmt.Sprintf("%s: %s", r.Name(), r.Value())
 }
 
-func (r *Require) Name() string {
-	return "Require"
+func (r *Supported) Name() string {
+	return "Supported"
 }
 
-func (r *Require) Value() string {
+func (r *Supported) Value() string {
 	return strings.Join(r.Options, ", ")
 }
 
-func (r *Require) Equals(other interface{}) bool {
-	if h, ok := other.(*Require); ok {
+func (r *Supported) Equals(other interface{}) bool {
+	if h, ok := other.(*Supported); ok {
 		if r == h {
 			return true
 		}
@@ -45,13 +45,13 @@ func (r *Require) Equals(other interface{}) bool {
 	return false
 }
 
-func (r *Require) Clone() Header {
+func (r *Supported) Clone() Header {
 	if r == nil {
-		var newRequire *Require
-		return newRequire
+		var newSupported *Supported
+		return newSupported
 	}
 
 	dup := make([]string, len(r.Options))
 	copy(dup, r.Options)
-	return &Require{dup}
+	return &Supported{dup}
 }

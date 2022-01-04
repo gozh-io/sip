@@ -5,24 +5,24 @@ import (
 	"strings"
 )
 
-type Require struct {
+type ProxyRequire struct {
 	Options []string
 }
 
-func (r *Require) String() string {
+func (r *ProxyRequire) String() string {
 	return fmt.Sprintf("%s: %s", r.Name(), r.Value())
 }
 
-func (r *Require) Name() string {
-	return "Require"
+func (r *ProxyRequire) Name() string {
+	return "Proxy-Require"
 }
 
-func (r *Require) Value() string {
+func (r *ProxyRequire) Value() string {
 	return strings.Join(r.Options, ", ")
 }
 
-func (r *Require) Equals(other interface{}) bool {
-	if h, ok := other.(*Require); ok {
+func (r *ProxyRequire) Equals(other interface{}) bool {
+	if h, ok := other.(*ProxyRequire); ok {
 		if r == h {
 			return true
 		}
@@ -45,13 +45,13 @@ func (r *Require) Equals(other interface{}) bool {
 	return false
 }
 
-func (r *Require) Clone() Header {
+func (r *ProxyRequire) Clone() Header {
 	if r == nil {
-		var newRequire *Require
-		return newRequire
+		var newProxyRequire *ProxyRequire
+		return newProxyRequire
 	}
 
 	dup := make([]string, len(r.Options))
 	copy(dup, r.Options)
-	return &Require{dup}
+	return &ProxyRequire{dup}
 }
