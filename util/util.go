@@ -8,3 +8,4 @@ func Uint16PtrEq(a *uint16, b *uint16) bool {
 
 	return *a == *b
 }
+
