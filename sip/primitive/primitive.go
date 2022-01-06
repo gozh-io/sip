@@ -16,6 +16,8 @@ func NewPort(port uint16) *Port {
 	return &p
 }
 
+type StatusCode uint16
+
 func (str *String) String() string {
 	return str.Value
 }
